@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body>
+
+
+
+
+<h1> CSI 2120</h1>
+<h2> Lab 4: Prolog</h2>
+
+<h3>Exercise 1. Books on Prolog</h3>
+Consider a small database that represents books,
+readers and loans. 
+
+<pre><code>
+% --------
+% book( Title, Authors, Publisher, Year, CallNumber )
+% --------
+
+book(
+  &#39;The craft of Prolog&#39;,
+  &#39;R. A. O&#39;&#39;Keefe&#39;,
+  &#39;MIT Press&#39;,
+  1990,
+  &#39;QA 76.73 .P76 O38 1990&#39;
+).
+book(
+  &#39;Programming in Prolog&#39;,
+  &#39;W. F. Clocksin, C. S. Mellish&#39;,
+  &#39;Springer&#39;,
+  2003,
+  &#39;QA 76.73 .P76 C57 2003&#39;
+).
+book(
+  &#39;Prolog for programmers&#39;,
+  &#39;F. Kluzniak, S. Szpakowicz&#39;,
+  &#39;Academic Press&#39;,
+  1985,
+  &#39;QA 76.73 .P76 K58 1985&#39;
+).
+book(
+  &#39;Prolog programming for artificial intelligence&#39;,
+  &#39;I. Bratko&#39;,
+  &#39;Addison-Wesley&#39;,
+  2001,
+  &#39;Q 336 .B74 2001&#39;
+).
+
+% --------
+% reader( CardNumber, Name )
+% --------
+
+reader( 1234567, &#39;James Brown&#39; ).
+reader( 2345678, &#39;Jacques Brun&#39; ).
+reader( 3456789, &#39;Giacomo Bruno&#39; ).
+
+% --------
+% checkedOut( CardNumber, CallNumber )
+% --------
+
+checkedOut( 1234567, &#39;QA 76.73 .P76 C57 2003&#39; ).
+checkedOut( 3456789, &#39;Q 336 .B74 2001&#39; ).
+</code></pre>
+<p>
+Write the queries that find (1) all books published by Springer,
+(2) all books published after 1990,
+(3) all books checked out by James Brown. Next, edit the file to add a 
+few useful entries to each of the three predicates, and run more queries
+ to see that you have not spoiled anything.
+</p>
+
+<h3>Exercise 2: Relationships</h3>
+
+Given the following database of relationship: <br/>
+
+<pre><code>
+parent(jack,joe).
+parent(jack,karl).
+parent(marie,anne).
+parent(joe,anne).
+parent(marie,paul).
+parent(joe,paul).
+parent(marie,sylvie).
+parent(bruno,sylvie).
+parent(anne,zach).
+parent(tim,zach).
+parent(sam,tim).
+parent(emma,tim).
+parent(josee,sam).
+parent(gilles,sam).
+female(marie).
+female(sylvie).
+female(anne).
+female(emma).
+female(josee).
+male(karl).
+male(jack).
+male(joe).
+male(bruno).
+male(paul).
+male(tim).
+male(zach).
+male(sam).
+male(gilles).
+</code></pre>
+ 
+Complete the predicate <em>gmp</em> replacing the <em>?</em> 
+with the appropriate variable. We want to identify the grandmother of Y on the paternal (father&#39;s side) from the facts listed above.
+
+<pre><code>
+gmp(X,Y) :- parent(?,?), 
+	    male(?), 
+	    parent(?,?), 
+	    female(?).
+</code></pre>
+
+Test your predicate with the following queries:<br/>
+
+<pre><code>
+1 ?- gmp(emma,zach).
+true.
+</code></pre>
+
+<pre><code>
+2 ?- gmp(marie,paul).
+false.
+</code></pre>
+
+<pre><code>
+3 ?- gmp(X,tim).
+X = josee ;
+false.
+</code></pre>
+
+<pre><code>
+4 ?- gmp(X,anne).
+false.
+</code></pre>
+
+
+<h3>Exercise 3: Rules and Quiz</h3>
+
+<em>Please hand-in the answer to this question on Virtual Campus during your lab session but at the latest by Friday 6:00pm! Remember, your submission will only count if you have signed the lab attendance sheet.</em>
+
+Given the following database:
+
+<pre><code>
+% Decision to skate home
+
+% canal sections
+% Format is: section number, end point 1, end point 2, distance
+section( 1, rideau, mackenzieKing, 0.2 ).
+section( 2, mackenzieKing, laurier, 0.2 ).
+section( 3, laurier, somerset, 0.4 ).
+section( 4, somerset, concord, 0.6 ).
+section( 5, concord, pretoria, 0.65 ).
+section( 6, pretoria, fifth, 0.8 ).
+section( 7, pattersonCreek, pattersonCreek, 0.3 ).
+section( 8, fifth, lansdowne, 0.7 ).
+section( 9, lansdowne, bank, 0.45 ).
+section( 10, bank, bronson, 1.0 ).
+section( 11, bronson, dowsLake, 0.2 ).
+section( 12, dowsLakeLoop, dowsLakeLoop, 1.7 ).
+section( 13, dowsLake, library, 0.6 ).
+
+% condition
+% Format is section number, conditions (green|yellow|red)
+condition( 1, red ).
+condition( 2, red ).
+condition( 3, yellow ).
+condition( 4, yellow ).
+condition( 5, yellow ).
+condition( 6, green ).
+condition( 7, yellow ).
+condition( 8, green ).
+condition( 9, green ).
+condition( 10, yellow ).
+condition( 11, yellow ).
+condition( 12, red ).
+condition( 13, yellow ).
+</code></pre>
+
+
+Fix the predicate <code>isOpen/1</code> to evalute to true if the conditions on the section with the number X is either green or yellow.
+
+<pre><code>
+% if conditions on a section are yellow or green, it is open.
+% This predicate is broken.    
+isOpen( X ) :- condition( X, yellow ),
+               condition( X, green ).
+</code></pre>
+
+
+Based on the above fix, change the predicate <code>skateHome/0</code> to be true if all sections between Summerset and Bronson are open. Your solution must use <code>isOpen/0</code>.
+
+<pre><code>
+% This predicate is broken    
+skateHome :-
+    Color = green,
+    section( X, somerset, concord, _ ),
+    condition( X, Color ),
+    section( X, concord, pretoria, _ ),
+    condition( X, Color ),
+    section( X, pretoria, fifth, _ ),
+    condition( X, Color ),
+    section( X, fifth, lansdowne, _ ),
+    condition( X, Color ),
+    section( X, lansdowne, bank, _ ),
+    condition( X, Color ),
+    section( X, bank, bronson, _ ),
+    condition( X, Color )
+    Color = yellow,
+    section( X, somerset, concord, _ ),
+    condition( X, Color ),
+    section( X, concord, pretoria, _ ),
+    condition( X, Color ),
+    section( X, pretoria, fifth, _ ),
+    condition( X, Color ),
+    section( X, fifth, lansdowne, _ ),
+    condition( X, Color ),
+    section( X, lansdowne, bank, _ ),
+    condition( X, Color ),
+    section( X, bank, bronson, _ ),
+    condition( X, Color ).
+</code></pre>
+
+
+
+
+<script type="text/javascript" src="/d2l/common/math/MathML.js?v=20.20.1.19936-31 "></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() { D2LMathML.DesktopInit('https://s.brightspace.com/lib/mathjax/2.6.1/MathJax.js?config=MML_HTMLorMML','https://s.brightspace.com/lib/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'); });</script></body></html>
