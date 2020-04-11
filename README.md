@@ -1,3 +1,3 @@
 # Programming Paradigms
 
-Labs and Assignments for Programming Paradigms
+Labs for Programming Paradigms
