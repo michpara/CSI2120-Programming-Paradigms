@@ -1,0 +1,1 @@
+countDown(N):- N > -1, writeln(N), N1 is N-1, countDown(N1). 
