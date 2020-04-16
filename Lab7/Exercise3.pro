@@ -16,4 +16,3 @@ reverseDrop([X | L1], [Y | L2], C) :-
 reverseDrop([X | L1], L2, C) :-
     CC is C + 1,
     reverseDrop(L1, L2, CC).
-
