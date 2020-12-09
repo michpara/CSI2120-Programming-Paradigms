@@ -26,8 +26,6 @@
 
 (define foo (lambda (x y) (+ x y)))
 
-foo 1 2
-
 ;Q4
 (define quadratic (lambda (a b c)
 	(define d (- (* b b) (* 4 a c)))
