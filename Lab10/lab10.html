@@ -1,0 +1,141 @@
+<HTML>
+<HEAD>
+<TITLE>CSI 2120, Winter 2020, Lab 10</TITLE>
+</HEAD>
+<BODY >
+<h1> CSI 2120</h1>
+<h2> Lab 10: Scheme</h2>
+
+<h3>Prerequisites</h3> 
+
+<p> This lab explores list which have been covered in detail in the online videos last week. In order to complete the lab, you will need to know: </p>
+<ul>
+  <li> Scheme uses the same recursive definition of lists as Prolog. What is called the head and tail in Prolog is called the car and cdr in Scheme. (These names come from the original Lisp implementation and stand for "Contents of Address Register" and "Contents of Data Register" referring to some Assembler Macros).
+  <li> The main function to build lists is the <code>cons</code> function with makes a pair of a car and cdr.</li>
+  <li> The main function to get at the content of lists are the <code>car</code> and <code>cdr</code>.</li> 
+</ul>
+
+
+<h3>Exercise 1: Building Lists</h3>
+
+Use <code>cons</code> to build the following lists:
+
+<pre><code>
+		'(3 4)
+		'(1 2 3)
+		'(a (b c))
+		'(1)
+		'(2 (3 (4)))
+</code></pre>
+
+
+<h3>Exercise 2: List Entries</h3>
+
+<p> Use car and cdr to obtain the <em>elements</em> from the list.
+</p>
+
+<pre><code>
+;  	Example:
+;       (define L '(1 2 3 4 5))    
+;
+; 	(car L)
+; 	=> 1
+;
+; 	(cdr L)
+;       => '(2 3 4 5)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+
+Combine calls <code>car</code> and <code>cdr</code> to get the element 2, 3, 4 and 5 from the list L (4 solutions).
+<pre><code>
+;       (define L '(1 2 3 4 5))    
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+
+
+Combine calls <code>car</code> and <code>cdr</code> to get the element 2 and 5 from the list LL (2 solutions).
+<pre><code>
+;       (define LL '(1 (2 3 4) (5)))    
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+
+Note that you can use shorthand commands such
+<pre><code>
+;       (cadr '(1 2))
+;       => 2
+;       (car (cdr '(1 2)))
+;       => 2    
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+<h3>Exercise 3: Integer Range</h3>
+
+Give a function that creates a list with integers in the specified range.
+
+<pre><code>
+;       The function takes two indices, i and k, and produces the integers
+;       between i and k including i and k.
+;
+; 	Example:
+; 	(range 4 9)
+; 	=> (4 5 6 7 8 9)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+
+<h3>Exercise 4: Sum of Squares Digit</h3>
+
+<p>
+Consider the digits d_k,d_(k-1),…,d_1,d_0 of a positive integer number. The squares of the digits are then s = d_k^2 + d_(k-1)^2 + … + d_1^2 + d_0^2. 
+</p>
+<p>
+Create a function sosd that calculates the sum of square digits.
+</p>
+
+<pre><code>
+;   The function calculates the sum of square digits. 
+;
+; 	Example:
+;  (sosd 130)
+; 	=> 10
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+
+<h3>Exercise 5: Every k-th element</h3>
+
+<pre><code>
+;      The function takes a list and an number selecting every kth
+;      element. Start counting at 1.
+;
+; 	Example:
+; 	(drop '(a b c d e f g h i k) 3)
+; 	=> (a b d e g h k)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+
+<h3>Exercise 5 and Quiz: List Manipulation</h3>
+
+<p>
+<em>Please hand-in the answer to this question on Virtual Campus at the latest by Friday 6:00pm! Your submission will only count if you also hand-in solutions to all of the exercises. However, Exercise 1 to 5 will not be graded.</em>
+</p>
+
+<p>
+Define a function addSubList that processes a list of lists of numbers and adds up all sub-lists. The output of your function is a flat list of numbers. (You can assume that your function only receives valid input). 
+</p>
+<code><pre>
+  (define Q '(1 2 (3 4) 1 5 (7 8)))
+;;;;;;;;;;;;;;;;;;;;;
+; (addSubList Q)      
+; => '(1 2 7 1 5 15)
+;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+
+
+</BODY>
+</HTML>
