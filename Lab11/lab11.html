@@ -1,0 +1,98 @@
+﻿<HTML>
+<HEAD>
+<TITLE>CSI 2120, Winter 2019, Lab 11</TITLE>
+</HEAD>
+<BODY >
+<h1> CSI 2120</h1>
+<h2> Lab 11: Scheme</h2>
+
+<h3>Exercise 1: List Processing with Error Checking</h3>
+
+<p> Write a top-level define absDiff that calculates the absolute difference of the corresponding elements of two lists. The function also evaluates to a list. Check if the list have the same length otherwise return an error. You are given the auxiliary routine loop.</p>
+
+<pre><code>
+(define (loop LA LB)
+  (if (or (null? LA) (null? LB))
+      '()
+      (cons (abs (- (car LA) (car LB))) (loop (cdr LA) (cdr LB)))))
+</code></pre>
+
+
+<pre><code>
+; Examples:
+;
+; (absDiff ‘(1 3 5 6) ‘(3 5 2 1))
+;  =>	(2 2 3 5)
+;
+; (absDiff '(1 3 5 6 7) '(3 5 2 1)) 
+; => "List have different length"
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+<h3>Exercise 2: Advanced List Processing</h3>
+
+<p> Change the above top-level define and auxillary function such that it also works when the two input lists are not the same length by assuming that the missing elements in the shorter list have the value of 0. The result will be of length equal to the longer list.</p>
+
+<pre><code>
+; Example:
+;
+; (absDiffA ‘(1 3 5 6 2 5) ‘(3 5 2 1))
+; =>	(2 2 3 5 2 5) 
+;
+; (absDiffA ‘(1 3 5 6) ‘(3 5 2 1 2 5))
+; =>	(2 2 3 5 2 5) 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+
+<h3>Exercise 3: Local Definitions</h3>
+
+Change the definition of the following function min-list to not use any auxillary helper function. Hint: Use local definitions.
+
+<pre><code>
+; Example:
+;
+; (min-list '(4 8 9 2 8))
+; => 2
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define (min-list x)
+  (if (null? x)
+      x
+      (min-list-aux (car x)(cdr x))))
+
+(define (min-list-aux e l)
+  (cond
+   ((null? l) e)
+   ((> e (car l))
+    (min-list-aux (car l)(cdr l)))
+   (else (min-list-aux e (cdr l)))))
+</code></pre>
+
+
+<h3>Exercise 4 and Quiz: Let Bindings</h3>
+
+<p>
+<em>Please hand-in the answer to this question on Virtual Campus during your lab session but at the latest by Friday 6:00pm! Remember, your submission will only count if you have signed the lab attendance sheet.</em>
+</p>
+<p>
+Fill the gaps in the following expression with the appropriate form of let.
+</p>
+
+
+<code><pre>
+
+; (____________ ((f (lambda (a b)
+; 	(_____________ ((b (* b b)))
+;		(_____________ ((a (* a a)) (b (- b a)))
+; 			(if (< a b)
+;                   (f b a))
+;                   (list a b))))))) (f 1 2))
+;
+; => '(9 -8)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+</code></pre>
+
+
+
+</BODY>
+</HTML>
