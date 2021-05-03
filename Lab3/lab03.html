@@ -1,0 +1,173 @@
+<HTML>
+<HEAD>
+<TITLE>CSI 2120, Winter 2020, Lab 3</TITLE>
+</HEAD>
+<BODY >
+<h1> CSI 2120</h1>
+<h2> Lab 3: Go</h2>
+
+
+<h3>Exercise 1: Channels</h3>
+
+<p>
+The following program is supposed to send the numbers 0 to 20 on a channel, double them in a filter and print them. However, the program does not stop printing (showing many 0).
+</p>
+
+<pre><code>
+package main
+import (
+	"fmt"
+)
+
+func sendInt() (ch chan int) {
+	defer fmt.Println("Sender ready!")
+	ch = make(chan int)
+	go func() {
+		for i := 0; i < 20; i++ {
+			ch <- i
+		}
+		close(ch)
+	}()
+	return
+}
+
+func filterInt(src <-chan int) (dst chan int) {
+	defer fmt.Println("Filter ready!")
+	dst = make(chan int)
+	go func() {
+		defer close(dst)
+		open := true
+		for open {
+			var i int
+			i, open = <-src
+
+			if open {
+				i *= 2
+				dst <- i
+			}
+		}
+	}()
+	return
+}
+</code></pre>
+
+
+
+Correct the <tt>main</tt> routine (and only the main routine - lambdas are ok):
+<pre><code>
+func main() {
+	src := sendInt()
+	dst := filterInt(src)
+	for {
+		i := <-dst
+		fmt.Printf("%d ", i)
+	}
+	fmt.Println()
+}
+</code></pre>
+
+<h3>Exercise 2: Errors</h3>
+
+<p>
+The following routine calculates the square root of a number and divides the result. It can therefore fail when the number is negative or when it divides by zero. Use the two errors in the routine rootDivN by implementing the error interface for the errors and extend the main program to distinguish the two errors by their type and print a corresponding message. You are not allowed to change the function prototype of rootDivN.
+</p>
+
+<pre><code>
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type NegError struct {
+	num float64 // negative number
+}
+
+type Div0Error struct {
+}
+
+func rootDivN(num float64, n int) (res float64, err error) {
+	if num < 0.0 {
+		return
+	}
+	if n == 0 {
+		return
+	}
+	res = math.Sqrt(num) / float64(n)
+	return
+}
+
+func main() {
+	divs := []int{2, 10, 3, 0}
+	nums := []float64{511.8, 0.65, -3.0, 2.123}
+
+	for i, num := range nums {
+		fmt.Printf("%d) sqrt(%f)/%d = ", i, num, divs[i])
+		res, err := rootDivN(num, divs[i])
+		if err == nil {
+			fmt.Printf("%f\n", res)
+		}
+	}
+}
+</code></pre>
+
+Desired Output:
+
+<pre><code>
+0) sqrt(511.800000)/2 = 11.311499
+1) sqrt(0.650000)/10 = 0.080623
+2) sqrt(-3.000000)/3 = Main NegError: Negative number -3.000000
+3) sqrt(2.123000)/0 = Main Div0Error: Division by 0
+</code></pre>
+
+
+<h3>Exercise 3: Waiting for Go Routines to Finish</h3>
+
+<p>
+The following program calculates the sum of the square roots of numbers. Each routine runs in its own go routines and sends the message on a dedicated channel back to the main program. The program exits to early. Fix the main routine (and only the main routine) to ensure that it finishes with the last received result (not earlier or later). Also make sure that you receive the results in the order they are calculated and not simply sequential in the order the routines are called.
+</p>
+
+<pre><code>
+package main
+
+import (
+	"fmt"
+	"math"
+	"math/rand"
+	"time"
+)
+
+func numbers(sz int) (res chan float64) {
+	res = make(chan float64)
+	go func() {
+		defer close(res) 
+		num := 0.0
+		time.Sleep(time.Duration(rand.Intn(1000)) * time.Microsecond)
+		for i := 0; i < sz; i++ {
+			num += math.Sqrt(math.Abs(rand.Float64()))
+		}
+		num /= float64(sz)
+		res <- num
+		return
+	}()
+	return
+}
+
+func main() {
+	var nGo int
+	rand.Seed(42)
+	fmt.Print("Number of Go routines: ")
+	fmt.Scanf("%d \n", &nGo)
+	res := make([]chan float64, nGo)
+
+	for i := 0; i < nGo; i++ {
+		res[i] = numbers(1000)
+	}
+}
+
+</code></pre>
+
+
+</BODY>
+</HTML>
